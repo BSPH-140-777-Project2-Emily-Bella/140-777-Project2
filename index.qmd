@@ -48,13 +48,11 @@ Education levels in urban vs rural PA?
 
 2.  Extract data from the `tidycensus` API. Use at least three different calls to the `tidycensus` API to extract out different datasets. For example, these could be across years, locations, or variables.
 
-I requested API keys using two different email addresses - still waiting.
-
 ```{r}
 library(tidycensus)
 library(tidyverse)
 
-census_api_key("YOUR API KEY GOES HERE")
+census_api_key("e347ece90b22a2d12a64d5393183d4dc6d382baf")
 ```
 
 3.  Clean the data. Include some form of data wrangling and data visualization using packages such as `dplyr` or `tidyr`. Other packages that might be helpful to you include `lubridate`, `stringr`, and `forcats`. You **must use at least two functions from `purrr`**.
