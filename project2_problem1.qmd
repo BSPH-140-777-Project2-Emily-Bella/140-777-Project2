@@ -34,4 +34,20 @@ data_2 = get_acs(geography = "tract", year = 2017, variables = vars2, state = "P
 data_3 = get_acs(geography = "tract", year = 2017, variables = vars3, state = "Pennsylvania")
 data_4 = get_acs(geography = "tract", year = 2017, variables = vars4, state = "Pennsylvania")
 data_5 = get_acs(geography = "tract", year = 2017, variables = vars5, state = "Pennsylvania")
+
+data_1 = data_1 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_2 = data_2 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_3 = data_3 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_4 = data_4 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_5 = data_5 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+
+data12 = full_join(data_1, data_2, by = c("GEOID", "NAME"))
+data34 = full_join(data_3, data_4, by = c("GEOID", "NAME"))
+data345 = full_join(data34, data_5, by = c("GEOID", "NAME"))
+data = full_join(data12, data345, by = c("GEOID", "NAME"))
 ```
