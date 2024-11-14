@@ -52,7 +52,7 @@ Education levels in urban vs rural PA?
 library(tidycensus)
 library(tidyverse)
 
-census_api_key("e347ece90b22a2d12a64d5393183d4dc6d382baf")
+census_api_key("7d55de6317ef97afe80c744aab78d1b75e2d1970")
 ```
 
 3.  Clean the data. Include some form of data wrangling and data visualization using packages such as `dplyr` or `tidyr`. Other packages that might be helpful to you include `lubridate`, `stringr`, and `forcats`. You **must use at least two functions from `purrr`**.
