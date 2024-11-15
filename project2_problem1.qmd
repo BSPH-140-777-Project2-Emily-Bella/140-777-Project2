@@ -35,6 +35,7 @@ data_2 = get_acs(geography = "tract", year = 2017, variables = vars2, state = "P
 data_3 = get_acs(geography = "tract", year = 2017, variables = vars3, state = "Pennsylvania")
 data_4 = get_acs(geography = "tract", year = 2017, variables = vars4, state = "Pennsylvania")
 data_5 = get_acs(geography = "tract", year = 2017, variables = vars5, state = "Pennsylvania")
+data_6 = get_acs(geography = "tract", year = 2017, variables = c(disability_total = "B18101_001"), state = "Pennsylvania")
 
 data_1 = data_1 %>% 
   pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
@@ -46,21 +47,40 @@ data_4 = data_4 %>%
   pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
 data_5 = data_5 %>% 
   pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_6 = data_6 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
 
 data12 = full_join(data_1, data_2, by = c("GEOID", "NAME"))
+data126 = full_join(data12, data_6, by = c("GEOID", "NAME"))
 data34 = full_join(data_3, data_4, by = c("GEOID", "NAME"))
 data345 = full_join(data34, data_5, by = c("GEOID", "NAME"))
-data = full_join(data12, data345, by = c("GEOID", "NAME"))
+data = full_join(data126, data345, by = c("GEOID", "NAME"))
 
-write_csv(data, "project2_data_final")
+write_csv(data, "project2_data_final2")
 ```
 
 ## Initial Data Visualization
 
 ```{r}
+library(gtsummary)
 data = read_csv("project2_data_final.csv")
 
 data %>% 
+  mutate(
+    disability.white.percent = estimate.disability.white/estimate.disability_total,
+    disability.black.percent = estimate.disability_black/estimate.disability_total,
+    disability.americanindian.percent = estimate.disability_americanindian/estimate.disability_total,
+    disability.asian.percent = estimate.disability_asian/estimate.disability_total,
+    disability.hawaiian.percent = estimate.disability_hawaiian/estimate.disability_total,
+    disability.otherrace.percent = estimate.disability_otherrace/estimate.disability_total,
+    disability.multiracial.percent = estimate.disability_multiracial/estimate.disability_total,
+    disability.male.percent = estimate.disability_male/estimate.disability_total,
+    disability.female.percent = estimate.disability_female/estimate.disability_total,
+    disability.19.percent = estimate.disability_19/estimate.disability_total,
+    disability.1964.percent = estimate.disability_19_64/estimate.disability_total,
+    disability.65.percent = estimate.disability_65plus/estimate.disability_total,
+    
+  )
   
 ```
 
