@@ -51,17 +51,108 @@ Education levels in urban vs rural PA?
 2.  Extract data from the `tidycensus` API. Use at least three different calls to the `tidycensus` API to extract out different datasets. For example, these could be across years, locations, or variables.
 
 ```{r}
+#|eval: false
+
 library(tidycensus)
 library(tidyverse)
 
 census_api_key("7d55de6317ef97afe80c744aab78d1b75e2d1970")
+
+#get the variables 
+data_1 = get_acs(geography = "tract", year = 2017, variables = c(male_under5 = "B18101_003", male_under5_disability = "B18101_004", male_1517 = "B18101_006", male_1517_disability = "B18101_007", male_1834 = "B18101_009", male_1834_disability = "B18101_010"), state = "Pennsylvania")
+data_2 = get_acs(geography = "tract", year = 2017, variables = c(male_3564 = "B18101_012", male_3564_disability = "B18101_013", male_6574 = "B18101_015", male_6574_disability = "B18101_016", male_75over = "B18101_018", male_75over_disability = "B18101_019"), state = "Pennsylvania")
+data_3 = get_acs(geography = "tract", year = 2017, variables = c(female_under5 = "B18101_022", female_under5_disability = "B18101_023", female_1517 = "B18101_025", female_1517_disability = "B18101_026", female_1834 = "B18101_028", female_1834_disability = "B18101_029"), state = "Pennsylvania")
+data_4 = get_acs(geography = "tract", year = 2017, variables = c(female_3564 = "B18101_031", female_3564_disability = "B18101_032", female_6574 = "B18101_034", female_6574_disability = "B18101_035", female_75over = "B18101_037", female_75over_disability = "B18101_038"), state = "Pennsylvania")
+data_5 = get_acs(geography = "tract", year = 2017, variables = c(total = "B18101_001", total_male = "B18101_002", total_female = "B18101_021"), state = "Pennsylvania")
+
+#pivot into columns
+data_1 = data_1 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_2 = data_2 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_3 = data_3 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_4 = data_4 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+data_5 = data_5 %>% 
+  pivot_wider(names_from = variable, values_from = c(estimate, moe), names_sep = ".")
+
+#join into one data set
+data = list(data_1, data_2, data_3, data_4, data_5) %>% 
+  reduce(full_join, by = c("GEOID", "NAME"))
+
+#save data locally
+write_csv(data, "project2_datafixed.csv")
 ```
 
 3.  Clean the data. Include some form of data wrangling and data visualization using packages such as `dplyr` or `tidyr`. Other packages that might be helpful to you include `lubridate`, `stringr`, and `forcats`. You **must use at least two functions from `purrr`**.
 
+```{r}
+#data wrangling into desired format
+data = data %>% 
+  mutate(
+    percent_male_under5 = estimate.male_under5_disability/estimate.male_under5,
+    percent_male_1517 = estimate.male_1517_disability/estimate.male_1517,
+    percent_male_1834 = estimate.male_1834_disability/estimate.male_1834,
+    percent_male_3564 = estimate.male_3564_disability/estimate.male_3564,
+    percent_male_6574 = estimate.male_6574_disability/estimate.male_6574,
+    percent_male_75over = estimate.male_75over_disability/estimate.male_75over,
+    percent_female_under5 = estimate.female_under5_disability/estimate.female_under5,
+    percent_female_1517 = estimate.female_1517_disability/estimate.female_1517,
+    percent_female_1834 = estimate.female_1834_disability/estimate.female_1834,
+    percent_female_3564 = estimate.female_3564_disability/estimate.female_3564,
+    percent_female_6574 = estimate.female_6574_disability/estimate.female_6574,
+    percent_female_75over = estimate.female_75over_disability/estimate.female_75over
+  ) %>% 
+  mutate(
+    percent.male = estimate.total_male/estimate.total,
+    percent.female = estimate.total_female/estimate.total
+  )
+
+data_full = data
+
+data = data[,57:70]
+
+#initial visualization
+data %>% 
+  map(summary)
+```
+
 https://walker-data.com/census-r/an-introduction-to-tidycensus.html might be helpful
 
 4.  Visualize the data. Create data visualizations of your choice. However, your analysis should include at least three plots with you using at least two different `geom_*()` functions from `ggplot2` (or another package with `geom_*()` functions).
+
+```{r}
+#|warning: false
+
+ggplot(data, aes(percent_female_under5))+geom_histogram(color = "purple")+ggtitle("Percent Females Under 5 with Disability")
+ggplot(data, aes(percent_male_under5))+geom_histogram(color = "green")+ggtitle("Percent Males Under 5 with Disability")
+
+ggplot(data, aes(percent_female_1517))+geom_histogram(color = "purple")+ggtitle("Percent Females 5-17 with Disability")
+ggplot(data, aes(percent_male_1517))+geom_histogram(color = "green")+ggtitle("Percent Males 5-17 with Disability")
+
+ggplot(data, aes(percent_female_1834))+geom_histogram(color = "purple")+ggtitle("Percent Females 18-34 with Disability")
+ggplot(data, aes(percent_male_1834))+geom_histogram(color = "green")+ggtitle("Percent Males 18-34 with Disability")
+
+ggplot(data, aes(percent_female_3564))+geom_histogram(color = "purple")+ggtitle("Percent Females 35-64 with Disability")
+ggplot(data, aes(percent_male_3564))+geom_histogram(color = "green")+ggtitle("Percent Males 35-64 with Disability")
+
+ggplot(data, aes(percent_female_6574))+geom_histogram(color = "purple")+ggtitle("Percent Females 65-74 with Disability")
+ggplot(data, aes(percent_male_6574))+geom_histogram(color = "green")+ggtitle("Percent Males 65-74 with Disability")
+
+ggplot(data, aes(percent_female_75over))+geom_histogram(color = "purple")+ggtitle("Percent Females Over 75 with Disability")
+ggplot(data, aes(percent_male_75over))+geom_histogram(color = "green")+ggtitle("Percent Males Over 75 with Disability")
+```
+
+```{r}
+#|warning: false
+
+ggplot()+geom_point(data, mapping = aes(x = percent_male_under5, y=percent_female_under5), color = "red")+geom_point(data, mapping = aes(x = percent_male_1517, y=percent_female_1517), color = "orange")+xlab("Percent Males with Disability")+ylab("Percent Females with Disability")+ggtitle("Males vs. Females Affected by Disability Under 5 and 5-17")
+
+ggplot()+geom_point(data, mapping = aes(x = percent_male_1834, y=percent_female_1834), color = "green")+geom_point(data, mapping = aes(x = percent_male_3564, y=percent_female_3564), color = "blue")+xlab("Percent Males with Disability")+ylab("Percent Females with Disability")+ggtitle("Males vs. Females Affected by Disability 18-34 and 35-64")
+
+ggplot()+geom_point(data, mapping = aes(x = percent_male_6574, y=percent_female_6574), color = "purple")+geom_point(data, mapping = aes(x = percent_male_75over, y=percent_female_75over), color = "gray")+xlab("Percent Males with Disability")+ylab("Percent Females with Disability")+ggtitle("Males vs. Females Affected by Disability 65-74 and 75+")
+```
 
 5.  Report your findings. Provide a paragraph summarizing your methods and key findings. Include any limitations or potential biases in pulling data from the API or the analysis. Be sure to comment and organize your code so is easy to understand what you are doing.
 
