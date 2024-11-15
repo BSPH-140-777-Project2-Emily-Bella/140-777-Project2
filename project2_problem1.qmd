@@ -13,6 +13,8 @@ knitr: true
 ## Data Extraction
 
 ```{r}
+#|eval: false
+
 library(tidycensus)
 library(tidyverse)
 
@@ -20,14 +22,13 @@ census_api_key("7d55de6317ef97afe80c744aab78d1b75e2d1970")
 
 vars1 = c(disability_white = "B18101A_001", disability_black = "B18101B_001", disability_americanindian = "B18101C_001", disability_asian = "B18101D_001", disability_hawaiian = "B18101E_001", disability_otherrace = "B18101F_001", disability_multiracial = "B18101G_001")
 
-vars2 = c(disability_male = "B18101_002", disability_female = "	
-B18101_021", disability_19 = "B18135_003", disability_19_64 = "B18135_014", disability_65plus = "B18135_025")
+vars2 = c(disability_male = "B18101_002", disability_female = "B18101_021", disability_19 = "B18135_003", disability_19_64 = "B18135_014", disability_65plus = "B18135_025")
 
-vars3 = c(disability_medianearning_male = "B18140_003", disability_medianearning_female = "	B18140_004", poverty_level_disability = "B23024_003", poverty_level_nodisability = "B23024_010", nodisability_medianearning_male = "B18140_006", nodisability_medianearning_female = "B18140_007")
+vars3 = c(disability_medianearning_male = "B18140_003", disability_medianearning_female = "B18140_004", poverty_level_disability = "B23024_003", poverty_level_nodisability = "B23024_010", nodisability_medianearning_male = "B18140_006", nodisability_medianearning_female = "B18140_007")
 
 vars4 = c(disability_allocated = "B99181_002", nodisability_allocated = "B99181_003", employed_disbility = "C18120_004", employed_nodisability = "C18120_005")
 
-vars5 = c(unemployed_disability = "C18120_007", unemployed_nodisability = "C18120_008", notworking_disability = "C18120_010", notworking_nodisability = "C18120_011")
+vars5 = c(unemployed_disability = "C18120_007", unemployed_nodisability = "C18120_008", notworking_disability = "C18120_010", notworking_nodisability = "C18120_011", total = "B00001_001")
 
 data_1 = get_acs(geography = "tract", year = 2017, variables = vars1, state = "Pennsylvania")
 data_2 = get_acs(geography = "tract", year = 2017, variables = vars2, state = "Pennsylvania")
@@ -50,5 +51,16 @@ data12 = full_join(data_1, data_2, by = c("GEOID", "NAME"))
 data34 = full_join(data_3, data_4, by = c("GEOID", "NAME"))
 data345 = full_join(data34, data_5, by = c("GEOID", "NAME"))
 data = full_join(data12, data345, by = c("GEOID", "NAME"))
+
+write_csv(data, "project2_data_final")
+```
+
+## Initial Data Visualization
+
+```{r}
+data = read_csv("project2_data_final.csv")
+
+data %>% 
+  
 ```
 
