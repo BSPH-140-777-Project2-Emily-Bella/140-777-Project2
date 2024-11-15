@@ -5,7 +5,9 @@ author:
     affiliation: Department of Biostatistics, Johns Hopkins
 description: "Practicing functional programming and data collection paradigms"
 date: 2024-11-10
-knitr: true
+format:
+  html:
+    code-fold: true
 ---
 
 # Background
@@ -65,32 +67,31 @@ https://walker-data.com/census-r/an-introduction-to-tidycensus.html might be hel
 
 # Part 2
 
-In this part, you and your partner will use the `rvest` package to scrape data from a website, wrangle and analyze the data, and summarize your findings.
+In this project, we perform web scraping on the IMDb website to gather and analyze movie information from their list of Most Popular Movies (100 movies across all genres). Specifically, this analysis seeks to compare characteristics across three genres: Sci-Fi, Adventure, and Mystery. Utilizing the `rvest` package, we extract structured data from each genre’s IMDb chart page and compile the results into a unified data frame, imdb_data, for further analysis.
 
-1.  Choose a website to scrape. Select a website with structured data in HTML tables or well-defined sections. Some examples could include:
+We begin by defining vectors containing the URLs and their corresponding genre labels for Sci-Fi, Adventure, and Mystery. This setup allows us to systematically associate each URL with its respective genre. Next, we initialize an empty data frame, imdb_data, with columns for Title, Duration, Rating, Reviews, Year, and Genre. This structure ensures that all collected data is organized consistently and that text-based fields remain in character format, facilitating easier data manipulation.
 
-IMDb scraping genre, duration, movie titles, reviews, ratings, and release years
+The script involves looping through each URL and its associated genre. Within each iteration, we use `rvest` functions to scrape specific data elements from the webpage. We extract movie titles using the CSS selector .with-margin .ipc-title__text, durations with .cli-title-metadata-item:nth-child(2), ratings via .ipc-rating-star--rating, review counts through .ipc-rating-star--voteCount, and release years using .cli-title-metadata-item:nth-child(1). For each of these attributes, we employ html_nodes() to target the desired HTML elements and html_text(trim = TRUE) to retrieve and clean the text data.
 
-2.  Extract data with `rvest`. Here, you will want to identify the specific HTML elements or CSS selectors containing the data. Then, use `rvest` functions like `read_html()`, `html_nodes()`, and `html_text()` or `html_table()` to retrieve the data.
-
-```{r}
+To ensure consistency in our data, we address potential discrepancies in the length of the scraped vectors by padding shorter vectors with NA values based on the longest vector length for each genre’s page. We then create a temporary data frame, temp_data, that includes the scraped data along with the corresponding genre label repeated for each entry. This temporary data frame is appended to our main imdb_data data frame using bind_rows(), resulting in a comprehensive dataset that includes a Genre column for easy categorization.
+```{r, message = FALSE}
 library(rvest)
 library(tidyverse)
 library(dplyr)
+library(ggplot2)
 ```
-
 
 ```{r}
 # Define the URLs and their corresponding genres
-urls <- c(
+urls = c(
   "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&sort=rank%2Casc&genres=sci-fi",
   "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&sort=rank%2Casc&genres=adventure",
   "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&sort=rank%2Casc&genres=mystery"
 )
-genres <- c("Sci-Fi", "Adventure", "Mystery")
+genres = c("Sci-Fi", "Adventure", "Mystery")
 
 # Initialize an empty data frame to store results
-imdb_data <- data.frame(
+imdb_data = data.frame(
   Title = character(),
   Duration = character(),
   Rating = character(),
@@ -103,45 +104,45 @@ imdb_data <- data.frame(
 # Loop through each URL and genre
 for (i in seq_along(urls)) {
   # Scrape the webpage
-  url <- urls[i]
-  genre <- genres[i]
-  webpage <- read_html(url)
+  url = urls[i]
+  genre = genres[i]
+  webpage = read_html(url)
   
   # Extract movie titles
-  titles <- webpage %>%
+  titles = webpage %>%
     html_nodes(".with-margin .ipc-title__text") %>%
     html_text(trim = TRUE)
   
   # Extract movie durations
-  durations <- webpage %>%
+  durations = webpage %>%
     html_nodes(".cli-title-metadata-item:nth-child(2)") %>%
     html_text(trim = TRUE)
   
   # Extract movie ratings
-  ratings <- webpage %>%
+  ratings = webpage %>%
     html_nodes(".ipc-rating-star--rating") %>%
     html_text(trim = TRUE)
   
   # Extract number of reviews
-  reviews <- webpage %>%
+  reviews = webpage %>%
     html_nodes(".ipc-rating-star--voteCount") %>%
     html_text(trim = TRUE)
   
   # Extract year
-  years <- webpage %>%
+  years = webpage %>%
     html_nodes(".cli-title-metadata-item:nth-child(1)") %>%
     html_text(trim = TRUE)
   
   # Ensure all vectors have the same length by padding with NA
-  max_length <- max(length(titles), length(durations), length(ratings), length(reviews), length(years))
-  titles <- c(titles, rep(NA, max_length - length(titles)))
-  durations <- c(durations, rep(NA, max_length - length(durations)))
-  ratings <- c(ratings, rep(NA, max_length - length(ratings)))
-  reviews <- c(reviews, rep(NA, max_length - length(reviews)))
-  years <- c(years, rep(NA, max_length - length(years)))
+  max_length = max(length(titles), length(durations), length(ratings), length(reviews), length(years))
+  titles = c(titles, rep(NA, max_length - length(titles)))
+  durations = c(durations, rep(NA, max_length - length(durations)))
+  ratings = c(ratings, rep(NA, max_length - length(ratings)))
+  reviews = c(reviews, rep(NA, max_length - length(reviews)))
+  years = c(years, rep(NA, max_length - length(years)))
   
   # Combine the data into a temporary data frame with Genre
-  temp_data <- data.frame(
+  temp_data = data.frame(
     Title = titles,
     Duration = durations,
     Rating = ratings,
@@ -152,20 +153,17 @@ for (i in seq_along(urls)) {
   )
   
   # Append the temporary data frame to the main data frame
-  imdb_data <- bind_rows(imdb_data, temp_data)
+  imdb_data = bind_rows(imdb_data, temp_data)
 }
 
 # Display the combined data with genre labels
-print(imdb_data)
+head(imdb_data)
 ```
 
-
-3.  Clean the data. Next, perform some basic wrangling, such as remove extra whitespace, handle missing values, and convert data types as needed. You might find the functions from `dplyr` or `tidyr` useful for any additional transformations, such as renaming columns, filtering rows, or creating new variables.
-
-convert Duration from to Duration in minutes and Reviews from (39K) to 39000.
+Following the data collection phase, we proceed with cleaning and transforming the data using `dplyr` and `tidyr` functions. We convert review counts from shorthand notations (e.g., “39K”) to full numerical values (e.g., “39000”) by removing any parentheses and expanding “K” or “M” suffixes to represent thousands or millions, respectively. Additionally, we transform the Duration field from an "hours and minutes" format into total minutes. This is achieved by splitting the duration string into separate hours and minutes components using the separate() function, converting these components to numeric values, and then calculating the total duration in minutes by combining them. We also needed to manually shift observations based on missingness for Reviews and Ratings for two films.
 ```{r}
 # Convert Duration and Reviews
-imdb_data %>%
+df = imdb_data %>%
   mutate(Reviews = gsub("^\\(|\\)$", "", Reviews)) %>%
   mutate(Reviews = ifelse(grepl("\\.\\d+K$", Reviews),
                           paste0(gsub("\\.", "", sub("K$", "", Reviews)), "00"),
@@ -184,14 +182,34 @@ imdb_data %>%
          Minutes = as.numeric(sub("m", "", Minutes)),
          Minutes2 = Hours * 60,
          Duration = Minutes + Minutes2) %>%
-  select(-Hours, -Minutes, -Minutes2)
+  select(-Hours, -Minutes, -Minutes2) %>% 
+  mutate(Reviews = as.numeric(Reviews)) %>% 
+  mutate(Rating = as.numeric(Rating)) 
+
+df$Rating[51:61] = c(NA, df$Rating[51:60])
+df$Rating[38:43] = c(NA, df$Rating[38:42])
+df$Reviews[51:61] = c(NA, df$Reviews[51:60])
+df$Reviews[38:43] = c(NA, df$Reviews[38:42])
+
+head(df)
 ```
 
+We produce a violin plot showing the differences in rating distributions for each genre. Adventure and Sci-Fi movies generally have higher ratings clustered between 6 and 8, with Sci-Fi showing the widest and most even spread across this range. However, Mystery movies display a much denser concentration around the 6–8 range with fewer high ratings. This suggests that this genre might have more consistency but slightly lower average IMDb ratings compared to the other two. To complement the graph, it is also interesting to compare the means across the genres in which the Adventure genre has the highest mean rating of 7.26, while Mystery and Sci-Fi are around 6.7-6.8. 
 
-4.  Analyze the data. Perform a simple analysis of your choice. For example, you could
+```{r, warning = FALSE}
+# Create a violin plot of movie rating by genre
+ggplot(df, aes(x = Genre, y = Rating)) +
+  geom_violin(trim = FALSE, fill = "skyblue") +
+  labs(
+    title = "Distribution of IMDb Ratings Across Genres",
+    subtitle = "Comparing Adventure, Mystery, and Sci-Fi movie ratings on IMDb",
+    x = "Movie Genre",
+    y = "IMDb Rating",
+    caption = "Data Source: IMDb"
+  ) +
+  theme_minimal()
 
-    -   Count how many times specific words or themes appear.
-    -   Create a summary statistic (e.g., average rating, job salary, team win percentage).
-    -   Create a data visualization (e.g., bar chart, histogram) of an interesting metric.
+aggregate(Rating ~ Genre, data = df, FUN = mean)
+```
 
-5.  Report your findings. Provide a paragraph summarizing your methods and key findings. Include any limitations or potential biases in your scraping or analysis. Be sure to comment and organize your code so is easy to understand what you are doing.
+A limitation of this analysis is that we were unable to retrieve the Popularity ranking (1-100) from the website due to a lack of CSS tag, which would have been interesting to compare to the Rating. There is also the issue of missing data for a few films, which meant I had to manually adjust the data to reflect the website. Hence, this analysis would be difficult to scale to a larger dataset or to include more genres.

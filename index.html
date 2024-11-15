@@ -177,8 +177,11 @@ Tip
 <li>Extract data from the <code>tidycensus</code> API. Use at least three different calls to the <code>tidycensus</code> API to extract out different datasets. For example, these could be across years, locations, or variables.</li>
 </ol>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -191,7 +194,10 @@ Tip
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">census_api_key</span>(<span class="st">"7d55de6317ef97afe80c744aab78d1b75e2d1970"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>To install your API key for use in future sessions, run this function with `install = TRUE`.</code></pre>
 </div>
@@ -207,394 +213,189 @@ Tip
 </section>
 <section id="part-2" class="level1">
 <h1>Part 2</h1>
-<p>In this part, you and your partner will use the <code>rvest</code> package to scrape data from a website, wrangle and analyze the data, and summarize your findings.</p>
-<ol type="1">
-<li>Choose a website to scrape. Select a website with structured data in HTML tables or well-defined sections. Some examples could include:</li>
-</ol>
-<p>IMDb scraping genre, duration, movie titles, reviews, ratings, and release years</p>
-<ol start="2" type="1">
-<li>Extract data with <code>rvest</code>. Here, you will want to identify the specific HTML elements or CSS selectors containing the data. Then, use <code>rvest</code> functions like <code>read_html()</code>, <code>html_nodes()</code>, and <code>html_text()</code> or <code>html_table()</code> to retrieve the data.</li>
-</ol>
+<p>In this project, we perform web scraping on the IMDb website to gather and analyze movie information from their list of Most Popular Movies (100 movies across all genres). Specifically, this analysis seeks to compare characteristics across three genres: Sci-Fi, Adventure, and Mystery. Utilizing the <code>rvest</code> package, we extract structured data from each genre’s IMDb chart page and compile the results into a unified data frame, imdb_data, for further analysis.</p>
+<p>We begin by defining vectors containing the URLs and their corresponding genre labels for Sci-Fi, Adventure, and Mystery. This setup allows us to systematically associate each URL with its respective genre. Next, we initialize an empty data frame, imdb_data, with columns for Title, Duration, Rating, Reviews, Year, and Genre. This structure ensures that all collected data is organized consistently and that text-based fields remain in character format, facilitating easier data manipulation.</p>
+<p>The script involves looping through each URL and its associated genre. Within each iteration, we use <code>rvest</code> functions to scrape specific data elements from the webpage. We extract movie titles using the CSS selector .with-margin .ipc-title__text, durations with .cli-title-metadata-item:nth-child(2), ratings via .ipc-rating-star–rating, review counts through .ipc-rating-star–voteCount, and release years using .cli-title-metadata-item:nth-child(1). For each of these attributes, we employ html_nodes() to target the desired HTML elements and html_text(trim = TRUE) to retrieve and clean the text data.</p>
+<p>To ensure consistency in our data, we address potential discrepancies in the length of the scraped vectors by padding shorter vectors with NA values based on the longest vector length for each genre’s page. We then create a temporary data frame, temp_data, that includes the scraped data along with the corresponding genre label repeated for each entry. This temporary data frame is appended to our main imdb_data data frame using bind_rows(), resulting in a comprehensive dataset that includes a Genre column for easy categorization.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'rvest'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:readr':
-
-    guess_encoding</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the URLs and their corresponding genres</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>urls <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=sci-fi"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=adventure"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=mystery"</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>genres <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Sci-Fi"</span>, <span class="st">"Adventure"</span>, <span class="st">"Mystery"</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty data frame to store results</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>imdb_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Title =</span> <span class="fu">character</span>(),</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Duration =</span> <span class="fu">character</span>(),</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Rating =</span> <span class="fu">character</span>(),</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Reviews =</span> <span class="fu">character</span>(),</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">character</span>(),</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Genre =</span> <span class="fu">character</span>(),</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each URL and genre</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(urls)) {</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Scrape the webpage</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  url <span class="ot">&lt;-</span> urls[i]</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  genre <span class="ot">&lt;-</span> genres[i]</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  webpage <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie titles</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">&lt;-</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".with-margin .ipc-title__text"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie durations</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">&lt;-</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".cli-title-metadata-item:nth-child(2)"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie ratings</span></span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">&lt;-</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--rating"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract number of reviews</span></span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>  reviews <span class="ot">&lt;-</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--voteCount"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract year</span></span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">&lt;-</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".cli-title-metadata-item:nth-child(1)"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure all vectors have the same length by padding with NA</span></span>
-<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>  max_length <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">length</span>(titles), <span class="fu">length</span>(durations), <span class="fu">length</span>(ratings), <span class="fu">length</span>(reviews), <span class="fu">length</span>(years))</span>
-<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">&lt;-</span> <span class="fu">c</span>(titles, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(titles)))</span>
-<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">&lt;-</span> <span class="fu">c</span>(durations, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(durations)))</span>
-<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">&lt;-</span> <span class="fu">c</span>(ratings, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(ratings)))</span>
-<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>  reviews <span class="ot">&lt;-</span> <span class="fu">c</span>(reviews, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(reviews)))</span>
-<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">&lt;-</span> <span class="fu">c</span>(years, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(years)))</span>
-<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine the data into a temporary data frame with Genre</span></span>
-<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>  temp_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">Title =</span> titles,</span>
-<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">Duration =</span> durations,</span>
-<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">Rating =</span> ratings,</span>
-<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">Reviews =</span> reviews,</span>
-<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> years,</span>
-<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">Genre =</span> <span class="fu">rep</span>(genre, max_length), <span class="co"># Add genre label here</span></span>
-<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Append the temporary data frame to the main data frame</span></span>
-<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>  imdb_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(imdb_data, temp_data)</span>
-<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the combined data with genre labels</span></span>
-<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(imdb_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the URLs and their corresponding genres</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>urls <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=sci-fi"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=adventure"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=mystery"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>genres <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Sci-Fi"</span>, <span class="st">"Adventure"</span>, <span class="st">"Mystery"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty data frame to store results</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>imdb_data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Title =</span> <span class="fu">character</span>(),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Duration =</span> <span class="fu">character</span>(),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Rating =</span> <span class="fu">character</span>(),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Reviews =</span> <span class="fu">character</span>(),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">character</span>(),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Genre =</span> <span class="fu">character</span>(),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each URL and genre</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(urls)) {</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Scrape the webpage</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  url <span class="ot">=</span> urls[i]</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  genre <span class="ot">=</span> genres[i]</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  webpage <span class="ot">=</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie titles</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".with-margin .ipc-title__text"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie durations</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".cli-title-metadata-item:nth-child(2)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie ratings</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--rating"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract number of reviews</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  reviews <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--voteCount"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract year</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".cli-title-metadata-item:nth-child(1)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure all vectors have the same length by padding with NA</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  max_length <span class="ot">=</span> <span class="fu">max</span>(<span class="fu">length</span>(titles), <span class="fu">length</span>(durations), <span class="fu">length</span>(ratings), <span class="fu">length</span>(reviews), <span class="fu">length</span>(years))</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">=</span> <span class="fu">c</span>(titles, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(titles)))</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">=</span> <span class="fu">c</span>(durations, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(durations)))</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">=</span> <span class="fu">c</span>(ratings, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(ratings)))</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  reviews <span class="ot">=</span> <span class="fu">c</span>(reviews, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(reviews)))</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">=</span> <span class="fu">c</span>(years, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(years)))</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine the data into a temporary data frame with Genre</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>  temp_data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">Title =</span> titles,</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">Duration =</span> durations,</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">Rating =</span> ratings,</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">Reviews =</span> reviews,</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> years,</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">Genre =</span> <span class="fu">rep</span>(genre, max_length), <span class="co"># Add genre label here</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Append the temporary data frame to the main data frame</span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>  imdb_data <span class="ot">=</span> <span class="fu">bind_rows</span>(imdb_data, temp_data)</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the combined data with genre labels</span></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(imdb_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>                                               Title Duration Rating Reviews
-1                              Venom: The Last Dance   1h 50m    6.2   (39K)
-2                                           Time Cut   1h 30m    5.0   (12K)
-3             Apocalypse Z: The Beginning of the End   1h 52m    6.1  (9.6K)
-4                                     The Wild Robot   1h 42m    8.3   (75K)
-5                               Deadpool &amp; Wolverine    2h 8m    7.7  (372K)
-6                                     Alien: Romulus   1h 59m    7.2  (160K)
-7                                   Transformers One   1h 44m    7.7   (29K)
-8                                       Interstellar   2h 49m    8.7  (2.2M)
-9                                    Despicable Me 4   1h 34m    6.2   (50K)
-10                                             Venom   1h 52m    6.6  (559K)
-11                                It's What's Inside   1h 43m    6.6   (27K)
-12                       Venom: Let There Be Carnage   1h 37m    5.9  (274K)
-13                                    Dune: Part Two   2h 46m    8.5  (543K)
-14                                      Subservience   1h 46m    5.2  (7.8K)
-15                                       Borderlands   1h 41m    4.6   (33K)
-16                                    Predestination   1h 37m    7.4  (314K)
-17                                       Megalopolis   2h 18m    5.0   (20K)
-18                                    V for Vendetta   2h 12m    8.1  (1.2M)
-19                           Furiosa: A Mad Max Saga   2h 28m    7.5  (228K)
-20                                       Poor Things   2h 21m    7.8  (312K)
-21                                         Idiocracy   1h 24m    6.5  (192K)
-22                             Venom: The Last Dance   1h 50m    6.2   (39K)
-23                                      Gladiator II   2h 28m    7.0  (6.4K)
-24                                           Red One    2h 3m    7.0   (16K)
-25                              Deadpool &amp; Wolverine    2h 8m    7.7  (372K)
-26                                         Gladiator   2h 35m    8.5  (1.7M)
-27                         The Count of Monte-Cristo   2h 58m    7.8   (13K)
-28                                  Transformers One   1h 44m    7.7   (29K)
-29                                      Interstellar   2h 49m    8.7  (2.2M)
-30                                         Civil War   1h 49m    7.0  (191K)
-31                                          Twisters    2h 2m    6.6  (119K)
-32                                   Despicable Me 4   1h 34m    6.2   (50K)
-33                                             Venom   1h 52m    6.6  (559K)
-34                   The Best Christmas Pageant Ever   1h 39m    7.4   (826)
-35                                      Inside Out 2   1h 36m    7.6  (175K)
-36                                Paddington in Peru   1h 46m    6.9  (1.5K)
-37             Harry Potter and the Sorcerer's Stone   2h 32m    7.6  (879K)
-38                                           Moana 2   1h 40m    8.5  (543K)
-39                                    Dune: Part Two   2h 46m    4.6   (33K)
-40                                       Borderlands   1h 41m    7.5  (228K)
-41                           Furiosa: A Mad Max Saga   2h 28m    8.9  (2.1M)
-42 The Lord of the Rings: The Fellowship of the Ring   2h 58m    6.5  (192K)
-43                                         Idiocracy   1h 24m   &lt;NA&gt;    &lt;NA&gt;
-44                                 Woman of the Hour   1h 35m    6.6   (36K)
-45                                          Time Cut   1h 30m    5.0   (12K)
-46                                           Red One    2h 3m    7.0   (16K)
-47                                              Trap   1h 45m    5.9  (102K)
-48                                           Smile 2    2h 7m    7.2   (32K)
-49                                        The Batman   2h 56m    7.8  (834K)
-50                                        Caddo Lake   1h 39m    6.9   (26K)
-51                                         Nosferatu   2h 12m    6.5  (197K)
-52                                                 X   1h 45m    6.5   (54K)
-53                                       Blink Twice   1h 42m    6.5  (194K)
-54                                             Smile   1h 55m    7.4   (826)
-55                   The Best Christmas Pageant Ever   1h 39m    6.6   (27K)
-56                                It's What's Inside   1h 43m    6.9  (1.5K)
-57                                Paddington in Peru   1h 46m    7.4  (406K)
-58                                            Scream   1h 51m    6.3  (1.2K)
-59                                      Pedro Páramo   2h 10m    6.8   (58K)
-60                                          Do Patti    2h 6m    5.4   (699)
-61                                        Absolution   1h 52m   &lt;NA&gt;    &lt;NA&gt;
-   Year     Genre
-1  2024    Sci-Fi
-2  2024    Sci-Fi
-3  2024    Sci-Fi
-4  2024    Sci-Fi
-5  2024    Sci-Fi
-6  2024    Sci-Fi
-7  2024    Sci-Fi
-8  2014    Sci-Fi
-9  2024    Sci-Fi
-10 2018    Sci-Fi
-11 2024    Sci-Fi
-12 2021    Sci-Fi
-13 2024    Sci-Fi
-14 2024    Sci-Fi
-15 2024    Sci-Fi
-16 2014    Sci-Fi
-17 2024    Sci-Fi
-18 2005    Sci-Fi
-19 2024    Sci-Fi
-20 2023    Sci-Fi
-21 2006    Sci-Fi
-22 2024 Adventure
-23 2024 Adventure
-24 2024 Adventure
-25 2024 Adventure
-26 2000 Adventure
-27 2024 Adventure
-28 2024 Adventure
-29 2014 Adventure
-30 2024 Adventure
-31 2024 Adventure
-32 2024 Adventure
-33 2018 Adventure
-34 2024 Adventure
-35 2024 Adventure
-36 2024 Adventure
-37 2001 Adventure
-38 2024 Adventure
-39 2024 Adventure
-40 2024 Adventure
-41 2024 Adventure
-42 2001 Adventure
-43 2006 Adventure
-44 2023   Mystery
-45 2024   Mystery
-46 2024   Mystery
-47 2024   Mystery
-48 2024   Mystery
-49 2022   Mystery
-50 2024   Mystery
-51 2024   Mystery
-52 2022   Mystery
-53 2024   Mystery
-54 2022   Mystery
-55 2024   Mystery
-56 2024   Mystery
-57 2024   Mystery
-58 1996   Mystery
-59 2024   Mystery
-60 2024   Mystery
-61 2024   Mystery</code></pre>
+<pre><code>                                   Title Duration Rating Reviews Year  Genre
+1                  Venom: The Last Dance   1h 50m    6.2   (39K) 2024 Sci-Fi
+2                               Time Cut   1h 30m    5.0   (12K) 2024 Sci-Fi
+3 Apocalypse Z: The Beginning of the End   1h 52m    6.1  (9.7K) 2024 Sci-Fi
+4                         The Wild Robot   1h 42m    8.3   (75K) 2024 Sci-Fi
+5                   Deadpool &amp; Wolverine    2h 8m    7.7  (372K) 2024 Sci-Fi
+6                         Alien: Romulus   1h 59m    7.2  (160K) 2024 Sci-Fi</code></pre>
 </div>
 </div>
-<ol start="3" type="1">
-<li>Clean the data. Next, perform some basic wrangling, such as remove extra whitespace, handle missing values, and convert data types as needed. You might find the functions from <code>dplyr</code> or <code>tidyr</code> useful for any additional transformations, such as renaming columns, filtering rows, or creating new variables.</li>
-</ol>
-<p>convert Duration from to Duration in minutes and Reviews from (39K) to 39000.</p>
+<p>Following the data collection phase, we proceed with cleaning and transforming the data using <code>dplyr</code> and <code>tidyr</code> functions. We convert review counts from shorthand notations (e.g., “39K”) to full numerical values (e.g., “39000”) by removing any parentheses and expanding “K” or “M” suffixes to represent thousands or millions, respectively. Additionally, we transform the Duration field from an “hours and minutes” format into total minutes. This is achieved by splitting the duration string into separate hours and minutes components using the separate() function, converting these components to numeric values, and then calculating the total duration in minutes by combining them. We also needed to manually shift observations based on missingness for Reviews and Ratings for two films.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert Duration and Reviews</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>imdb_data <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">gsub</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">(|</span><span class="sc">\\</span><span class="st">)$"</span>, <span class="st">""</span>, Reviews)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+K$"</span>, Reviews),</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>, <span class="fu">sub</span>(<span class="st">"K$"</span>, <span class="st">""</span>, Reviews)), <span class="st">"00"</span>),</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"K$"</span>, Reviews),</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">sub</span>(<span class="st">"K$"</span>, <span class="st">""</span>, Reviews), <span class="st">"000"</span>),</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+M$"</span>, Reviews),</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>, <span class="fu">sub</span>(<span class="st">"M$"</span>, <span class="st">""</span>, Reviews)), <span class="st">"00000"</span>),</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Duration, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Hours"</span>, <span class="st">"Minutes"</span>), <span class="at">sep =</span> <span class="st">"h "</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Hours =</span> <span class="fu">as.numeric</span>(Hours),</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes =</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"m"</span>, <span class="st">""</span>, Minutes))) <span class="sc">%&gt;%</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Duration, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Hours"</span>, <span class="st">"Minutes"</span>), <span class="at">sep =</span> <span class="st">"h "</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Hours =</span> <span class="fu">as.numeric</span>(Hours),</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes =</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"m"</span>, <span class="st">""</span>, Minutes)),</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes2 =</span> Hours <span class="sc">*</span> <span class="dv">60</span>,</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">Duration =</span> Minutes <span class="sc">+</span> Minutes2) <span class="sc">%&gt;%</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Hours, <span class="sc">-</span>Minutes, <span class="sc">-</span>Minutes2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert Duration and Reviews</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> imdb_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">gsub</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">(|</span><span class="sc">\\</span><span class="st">)$"</span>, <span class="st">""</span>, Reviews)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+K$"</span>, Reviews),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>, <span class="fu">sub</span>(<span class="st">"K$"</span>, <span class="st">""</span>, Reviews)), <span class="st">"00"</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"K$"</span>, Reviews),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">sub</span>(<span class="st">"K$"</span>, <span class="st">""</span>, Reviews), <span class="st">"000"</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+M$"</span>, Reviews),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>, <span class="fu">sub</span>(<span class="st">"M$"</span>, <span class="st">""</span>, Reviews)), <span class="st">"00000"</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Duration, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Hours"</span>, <span class="st">"Minutes"</span>), <span class="at">sep =</span> <span class="st">"h "</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Hours =</span> <span class="fu">as.numeric</span>(Hours),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes =</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"m"</span>, <span class="st">""</span>, Minutes))) <span class="sc">%&gt;%</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Duration, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Hours"</span>, <span class="st">"Minutes"</span>), <span class="at">sep =</span> <span class="st">"h "</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Hours =</span> <span class="fu">as.numeric</span>(Hours),</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes =</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"m"</span>, <span class="st">""</span>, Minutes)),</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes2 =</span> Hours <span class="sc">*</span> <span class="dv">60</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">Duration =</span> Minutes <span class="sc">+</span> Minutes2) <span class="sc">%&gt;%</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Hours, <span class="sc">-</span>Minutes, <span class="sc">-</span>Minutes2) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">as.numeric</span>(Reviews)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rating =</span> <span class="fu">as.numeric</span>(Rating)) </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Rating[<span class="dv">51</span><span class="sc">:</span><span class="dv">61</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Rating[<span class="dv">51</span><span class="sc">:</span><span class="dv">60</span>])</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Rating[<span class="dv">38</span><span class="sc">:</span><span class="dv">43</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Rating[<span class="dv">38</span><span class="sc">:</span><span class="dv">42</span>])</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Reviews[<span class="dv">51</span><span class="sc">:</span><span class="dv">61</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Reviews[<span class="dv">51</span><span class="sc">:</span><span class="dv">60</span>])</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Reviews[<span class="dv">38</span><span class="sc">:</span><span class="dv">43</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Reviews[<span class="dv">38</span><span class="sc">:</span><span class="dv">42</span>])</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>                                               Title Duration Rating Reviews
-1                              Venom: The Last Dance      110    6.2   39000
-2                                           Time Cut       90    5.0   12000
-3             Apocalypse Z: The Beginning of the End      112    6.1    9600
-4                                     The Wild Robot      102    8.3   75000
-5                               Deadpool &amp; Wolverine      128    7.7  372000
-6                                     Alien: Romulus      119    7.2  160000
-7                                   Transformers One      104    7.7   29000
-8                                       Interstellar      169    8.7 2200000
-9                                    Despicable Me 4       94    6.2   50000
-10                                             Venom      112    6.6  559000
-11                                It's What's Inside      103    6.6   27000
-12                       Venom: Let There Be Carnage       97    5.9  274000
-13                                    Dune: Part Two      166    8.5  543000
-14                                      Subservience      106    5.2    7800
-15                                       Borderlands      101    4.6   33000
-16                                    Predestination       97    7.4  314000
-17                                       Megalopolis      138    5.0   20000
-18                                    V for Vendetta      132    8.1 1200000
-19                           Furiosa: A Mad Max Saga      148    7.5  228000
-20                                       Poor Things      141    7.8  312000
-21                                         Idiocracy       84    6.5  192000
-22                             Venom: The Last Dance      110    6.2   39000
-23                                      Gladiator II      148    7.0    6400
-24                                           Red One      123    7.0   16000
-25                              Deadpool &amp; Wolverine      128    7.7  372000
-26                                         Gladiator      155    8.5 1700000
-27                         The Count of Monte-Cristo      178    7.8   13000
-28                                  Transformers One      104    7.7   29000
-29                                      Interstellar      169    8.7 2200000
-30                                         Civil War      109    7.0  191000
-31                                          Twisters      122    6.6  119000
-32                                   Despicable Me 4       94    6.2   50000
-33                                             Venom      112    6.6  559000
-34                   The Best Christmas Pageant Ever       99    7.4     826
-35                                      Inside Out 2       96    7.6  175000
-36                                Paddington in Peru      106    6.9    1500
-37             Harry Potter and the Sorcerer's Stone      152    7.6  879000
-38                                           Moana 2      100    8.5  543000
-39                                    Dune: Part Two      166    4.6   33000
-40                                       Borderlands      101    7.5  228000
-41                           Furiosa: A Mad Max Saga      148    8.9 2100000
-42 The Lord of the Rings: The Fellowship of the Ring      178    6.5  192000
-43                                         Idiocracy       84   &lt;NA&gt;    &lt;NA&gt;
-44                                 Woman of the Hour       95    6.6   36000
-45                                          Time Cut       90    5.0   12000
-46                                           Red One      123    7.0   16000
-47                                              Trap      105    5.9  102000
-48                                           Smile 2      127    7.2   32000
-49                                        The Batman      176    7.8  834000
-50                                        Caddo Lake       99    6.9   26000
-51                                         Nosferatu      132    6.5  197000
-52                                                 X      105    6.5   54000
-53                                       Blink Twice      102    6.5  194000
-54                                             Smile      115    7.4     826
-55                   The Best Christmas Pageant Ever       99    6.6   27000
-56                                It's What's Inside      103    6.9    1500
-57                                Paddington in Peru      106    7.4  406000
-58                                            Scream      111    6.3    1200
-59                                      Pedro Páramo      130    6.8   58000
-60                                          Do Patti      126    5.4     699
-61                                        Absolution      112   &lt;NA&gt;    &lt;NA&gt;
-   Year     Genre
-1  2024    Sci-Fi
-2  2024    Sci-Fi
-3  2024    Sci-Fi
-4  2024    Sci-Fi
-5  2024    Sci-Fi
-6  2024    Sci-Fi
-7  2024    Sci-Fi
-8  2014    Sci-Fi
-9  2024    Sci-Fi
-10 2018    Sci-Fi
-11 2024    Sci-Fi
-12 2021    Sci-Fi
-13 2024    Sci-Fi
-14 2024    Sci-Fi
-15 2024    Sci-Fi
-16 2014    Sci-Fi
-17 2024    Sci-Fi
-18 2005    Sci-Fi
-19 2024    Sci-Fi
-20 2023    Sci-Fi
-21 2006    Sci-Fi
-22 2024 Adventure
-23 2024 Adventure
-24 2024 Adventure
-25 2024 Adventure
-26 2000 Adventure
-27 2024 Adventure
-28 2024 Adventure
-29 2014 Adventure
-30 2024 Adventure
-31 2024 Adventure
-32 2024 Adventure
-33 2018 Adventure
-34 2024 Adventure
-35 2024 Adventure
-36 2024 Adventure
-37 2001 Adventure
-38 2024 Adventure
-39 2024 Adventure
-40 2024 Adventure
-41 2024 Adventure
-42 2001 Adventure
-43 2006 Adventure
-44 2023   Mystery
-45 2024   Mystery
-46 2024   Mystery
-47 2024   Mystery
-48 2024   Mystery
-49 2022   Mystery
-50 2024   Mystery
-51 2024   Mystery
-52 2022   Mystery
-53 2024   Mystery
-54 2022   Mystery
-55 2024   Mystery
-56 2024   Mystery
-57 2024   Mystery
-58 1996   Mystery
-59 2024   Mystery
-60 2024   Mystery
-61 2024   Mystery</code></pre>
+<pre><code>                                   Title Duration Rating Reviews Year  Genre
+1                  Venom: The Last Dance      110    6.2   39000 2024 Sci-Fi
+2                               Time Cut       90    5.0   12000 2024 Sci-Fi
+3 Apocalypse Z: The Beginning of the End      112    6.1    9700 2024 Sci-Fi
+4                         The Wild Robot      102    8.3   75000 2024 Sci-Fi
+5                   Deadpool &amp; Wolverine      128    7.7  372000 2024 Sci-Fi
+6                         Alien: Romulus      119    7.2  160000 2024 Sci-Fi</code></pre>
 </div>
 </div>
-<ol start="4" type="1">
-<li><p>Analyze the data. Perform a simple analysis of your choice. For example, you could</p>
-<ul>
-<li>Count how many times specific words or themes appear.</li>
-<li>Create a summary statistic (e.g., average rating, job salary, team win percentage).</li>
-<li>Create a data visualization (e.g., bar chart, histogram) of an interesting metric.</li>
-</ul></li>
-<li><p>Report your findings. Provide a paragraph summarizing your methods and key findings. Include any limitations or potential biases in your scraping or analysis. Be sure to comment and organize your code so is easy to understand what you are doing.</p></li>
-</ol>
+<p>We produce a violin plot showing the differences in rating distributions for each genre. Adventure and Sci-Fi movies generally have higher ratings clustered between 6 and 8, with Sci-Fi showing the widest and most even spread across this range. However, Mystery movies display a much denser concentration around the 6–8 range with fewer high ratings. This suggests that this genre might have more consistency but slightly lower average IMDb ratings compared to the other two. To complement the graph, it is also interesting to compare the means across the genres in which the Adventure genre has the highest mean rating of 7.26, while Mystery and Sci-Fi are around 6.7-6.8.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a violin plot of movie rating by genre</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> Genre, <span class="at">y =</span> Rating)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of IMDb Ratings Across Genres"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparing Adventure, Mystery, and Sci-Fi movie ratings on IMDb"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Movie Genre"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"IMDb Rating"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Data Source: IMDb"</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(Rating <span class="sc">~</span> Genre, <span class="at">data =</span> df, <span class="at">FUN =</span> mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Genre   Rating
+1 Adventure 7.266667
+2   Mystery 6.629412
+3    Sci-Fi 6.800000</code></pre>
+</div>
+</div>
+<p>A limitation of this analysis is that we were unable to retrieve the Popularity ranking (1-100) from the website due to a lack of CSS tag, which would have been interesting to compare to the Rating. There is also the issue of missing data for a few films, which meant I had to manually adjust the data to reflect the website. Hence, this analysis would be difficult to scale to a larger dataset or to include more genres.</p>
 </section>
 
 </main>
