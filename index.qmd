@@ -24,33 +24,13 @@ Because you will work with a partner, **please be sure to include the names, ema
 
 # Part 1
 
-Here, you and your partner will practice using a API and making data visualizations.
-
-The API we will use is `tidycensus` (<https://walker-data.com/tidycensus>), which is an R package that allows users to interface with a select number of the US Census Bureau’s data APIs and return tidyverse-ready data frames, optionally with simple feature geometry included.
-
-The goal of this part is to create a set of data visualizations using the US Census Bureau's data.
-
-::: callout-important
-To use this API, you must obtain an API key, which can be found at the top of this page:
-
--   <https://walker-data.com/tidycensus/articles/basic-usage>
-:::
-
-::: callout-tip
-When you use an API, you want to figure out the data you want to extract and then save it locally so that you are not using the API each time you knit or render your data analysis.
-
-Most APIs have limits on the number of times you can ping it in a given hour and your IP address can be blocked if you try to ping it too many times within a short time.
-
-Therefore, it is strongly suggested that you create a new folder called `data` locally and save the output from extracting data from the `tidycensus` API. In this way, you can read the data in locally each time you knit/render the document, rather than continue to pull data from the API each time you knit/render the document.
-:::
-
 1.  Choose a question to investigate. Describe what is the question you aim to answer with the data and what you want to visualize.
 
 This brief analysis is meant to examine the prevalence of disability status across census tracts within Pennsylvania, specifically focusing on stratification by age and sex and their overlap.
 
 2.  Extract data from the `tidycensus` API. Use at least three different calls to the `tidycensus` API to extract out different datasets. For example, these could be across years, locations, or variables.
 
-```{r}
+```{r, message = FALSE}
 #|eval: false
 
 library(tidycensus)
@@ -122,9 +102,7 @@ https://walker-data.com/census-r/an-introduction-to-tidycensus.html might be hel
 
 4.  Visualize the data. Create data visualizations of your choice. However, your analysis should include at least three plots with you using at least two different `geom_*()` functions from `ggplot2` (or another package with `geom_*()` functions).
 
-```{r}
-#|warning: false
-
+```{r, warning = FALSE, message = FALSE}
 ggplot(data, aes(percent_female_under5))+geom_histogram(color = "purple")+ggtitle("Percent Females Under 5 with Disability")
 ggplot(data, aes(percent_male_under5))+geom_histogram(color = "green")+ggtitle("Percent Males Under 5 with Disability")
 
@@ -144,9 +122,7 @@ ggplot(data, aes(percent_female_75over))+geom_histogram(color = "purple")+ggtitl
 ggplot(data, aes(percent_male_75over))+geom_histogram(color = "green")+ggtitle("Percent Males Over 75 with Disability")
 ```
 
-```{r}
-#|warning: false
-
+```{r, warning = FALSE, message = FALSE}
 ggplot()+geom_point(data, mapping = aes(x = percent_male_under5, y=percent_female_under5), color = "red")+geom_point(data, mapping = aes(x = percent_male_1517, y=percent_female_1517), color = "orange")+xlab("Percent Males with Disability")+ylab("Percent Females with Disability")+ggtitle("Males vs. Females Affected by Disability Under 5 and 5-17")
 
 ggplot()+geom_point(data, mapping = aes(x = percent_male_1834, y=percent_female_1834), color = "green")+geom_point(data, mapping = aes(x = percent_male_3564, y=percent_female_3564), color = "blue")+xlab("Percent Males with Disability")+ylab("Percent Females with Disability")+ggtitle("Males vs. Females Affected by Disability 18-34 and 35-64")
@@ -162,11 +138,11 @@ Overall, pulling data from the API was a difficult process that limited the exte
 
 In this project, we perform web scraping on the IMDb website to gather and analyze movie information from their list of Most Popular Movies (100 movies across all genres). Specifically, this analysis seeks to compare characteristics across three genres: Sci-Fi, Adventure, and Mystery. Utilizing the `rvest` package, we extract structured data from each genre’s IMDb chart page and compile the results into a unified data frame, imdb_data, for further analysis.
 
-We begin by defining vectors containing the URLs and their corresponding genre labels for Sci-Fi, Adventure, and Mystery. This setup allows us to systematically associate each URL with its respective genre. Next, we initialize an empty data frame, imdb_data, with columns for Title, Duration, Rating, Reviews, Year, and Genre. This structure ensures that all collected data is organized consistently and that text-based fields remain in character format, facilitating easier data manipulation.
+We begin by defining vectors containing the URLs and their corresponding genre labels for Sci-Fi, Adventure, and Mystery. This setup allows us to systematically associate each URL with its respective genre. Next, we initialize an empty data frame, imdb_data, with columns for Title, Duration, Rating, Reviews, Year, and Genre.
 
 The script involves looping through each URL and its associated genre. Within each iteration, we use `rvest` functions to scrape specific data elements from the webpage. We extract movie titles using the CSS selector .with-margin .ipc-title__text, durations with .cli-title-metadata-item:nth-child(2), ratings via .ipc-rating-star--rating, review counts through .ipc-rating-star--voteCount, and release years using .cli-title-metadata-item:nth-child(1). For each of these attributes, we employ html_nodes() to target the desired HTML elements and html_text(trim = TRUE) to retrieve and clean the text data.
 
-To ensure consistency in our data, we address potential discrepancies in the length of the scraped vectors by padding shorter vectors with NA values based on the longest vector length for each genre’s page. We then create a temporary data frame, temp_data, that includes the scraped data along with the corresponding genre label repeated for each entry. This temporary data frame is appended to our main imdb_data data frame using bind_rows(), resulting in a comprehensive dataset that includes a Genre column for easy categorization.
+To ensure consistency in our data, we address potential discrepancies in the length of the scraped vectors by padding shorter vectors with NA values based on the longest vector length for each genre’s page. We then create a temporary data frame, temp_data, that includes the scraped data along with the corresponding genre label repeated for each entry. This temporary data frame is appended to our main imdb_data data frame using bind_rows(), resulting in a comprehensive dataset that includes a Genre column for categorization.
 ```{r, message = FALSE}
 library(rvest)
 library(tidyverse)
