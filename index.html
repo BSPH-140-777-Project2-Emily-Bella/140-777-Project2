@@ -179,8 +179,10 @@ Tip
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|eval: false</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
@@ -201,14 +203,444 @@ Tip
 <div class="cell-output cell-output-stderr">
 <pre><code>To install your API key for use in future sessions, run this function with `install = TRUE`.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get the variables </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data_1 <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"tract"</span>, <span class="at">year =</span> <span class="dv">2017</span>, <span class="at">variables =</span> <span class="fu">c</span>(<span class="at">male_under5 =</span> <span class="st">"B18101_003"</span>, <span class="at">male_under5_disability =</span> <span class="st">"B18101_004"</span>, <span class="at">male_1517 =</span> <span class="st">"B18101_006"</span>, <span class="at">male_1517_disability =</span> <span class="st">"B18101_007"</span>, <span class="at">male_1834 =</span> <span class="st">"B18101_009"</span>, <span class="at">male_1834_disability =</span> <span class="st">"B18101_010"</span>), <span class="at">state =</span> <span class="st">"Pennsylvania"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Getting data from the 2013-2017 5-year ACS</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_2 <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"tract"</span>, <span class="at">year =</span> <span class="dv">2017</span>, <span class="at">variables =</span> <span class="fu">c</span>(<span class="at">male_3564 =</span> <span class="st">"B18101_012"</span>, <span class="at">male_3564_disability =</span> <span class="st">"B18101_013"</span>, <span class="at">male_6574 =</span> <span class="st">"B18101_015"</span>, <span class="at">male_6574_disability =</span> <span class="st">"B18101_016"</span>, <span class="at">male_75over =</span> <span class="st">"B18101_018"</span>, <span class="at">male_75over_disability =</span> <span class="st">"B18101_019"</span>), <span class="at">state =</span> <span class="st">"Pennsylvania"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Getting data from the 2013-2017 5-year ACS</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_3 <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"tract"</span>, <span class="at">year =</span> <span class="dv">2017</span>, <span class="at">variables =</span> <span class="fu">c</span>(<span class="at">female_under5 =</span> <span class="st">"B18101_022"</span>, <span class="at">female_under5_disability =</span> <span class="st">"B18101_023"</span>, <span class="at">female_1517 =</span> <span class="st">"B18101_025"</span>, <span class="at">female_1517_disability =</span> <span class="st">"B18101_026"</span>, <span class="at">female_1834 =</span> <span class="st">"B18101_028"</span>, <span class="at">female_1834_disability =</span> <span class="st">"B18101_029"</span>), <span class="at">state =</span> <span class="st">"Pennsylvania"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Getting data from the 2013-2017 5-year ACS</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_4 <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"tract"</span>, <span class="at">year =</span> <span class="dv">2017</span>, <span class="at">variables =</span> <span class="fu">c</span>(<span class="at">female_3564 =</span> <span class="st">"B18101_031"</span>, <span class="at">female_3564_disability =</span> <span class="st">"B18101_032"</span>, <span class="at">female_6574 =</span> <span class="st">"B18101_034"</span>, <span class="at">female_6574_disability =</span> <span class="st">"B18101_035"</span>, <span class="at">female_75over =</span> <span class="st">"B18101_037"</span>, <span class="at">female_75over_disability =</span> <span class="st">"B18101_038"</span>), <span class="at">state =</span> <span class="st">"Pennsylvania"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Getting data from the 2013-2017 5-year ACS</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data_5 <span class="ot">=</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"tract"</span>, <span class="at">year =</span> <span class="dv">2017</span>, <span class="at">variables =</span> <span class="fu">c</span>(<span class="at">total =</span> <span class="st">"B18101_001"</span>, <span class="at">total_male =</span> <span class="st">"B18101_002"</span>, <span class="at">total_female =</span> <span class="st">"B18101_021"</span>), <span class="at">state =</span> <span class="st">"Pennsylvania"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Getting data from the 2013-2017 5-year ACS</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#pivot into columns</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>data_1 <span class="ot">=</span> data_1 <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> variable, <span class="at">values_from =</span> <span class="fu">c</span>(estimate, moe), <span class="at">names_sep =</span> <span class="st">"."</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>data_2 <span class="ot">=</span> data_2 <span class="sc">%&gt;%</span> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> variable, <span class="at">values_from =</span> <span class="fu">c</span>(estimate, moe), <span class="at">names_sep =</span> <span class="st">"."</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>data_3 <span class="ot">=</span> data_3 <span class="sc">%&gt;%</span> </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> variable, <span class="at">values_from =</span> <span class="fu">c</span>(estimate, moe), <span class="at">names_sep =</span> <span class="st">"."</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>data_4 <span class="ot">=</span> data_4 <span class="sc">%&gt;%</span> </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> variable, <span class="at">values_from =</span> <span class="fu">c</span>(estimate, moe), <span class="at">names_sep =</span> <span class="st">"."</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>data_5 <span class="ot">=</span> data_5 <span class="sc">%&gt;%</span> </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> variable, <span class="at">values_from =</span> <span class="fu">c</span>(estimate, moe), <span class="at">names_sep =</span> <span class="st">"."</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#join into one data set</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">list</span>(data_1, data_2, data_3, data_4, data_5) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reduce</span>(full_join, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"GEOID"</span>, <span class="st">"NAME"</span>))</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">#save data locally</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(data, <span class="st">"project2_datafixed.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <ol start="3" type="1">
 <li>Clean the data. Include some form of data wrangling and data visualization using packages such as <code>dplyr</code> or <code>tidyr</code>. Other packages that might be helpful to you include <code>lubridate</code>, <code>stringr</code>, and <code>forcats</code>. You <strong>must use at least two functions from <code>purrr</code></strong>.</li>
 </ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#data wrangling into desired format</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_male_under5 =</span> estimate.male_under5_disability<span class="sc">/</span>estimate.male_under5,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_male_1517 =</span> estimate.male_1517_disability<span class="sc">/</span>estimate.male_1517,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_male_1834 =</span> estimate.male_1834_disability<span class="sc">/</span>estimate.male_1834,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_male_3564 =</span> estimate.male_3564_disability<span class="sc">/</span>estimate.male_3564,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_male_6574 =</span> estimate.male_6574_disability<span class="sc">/</span>estimate.male_6574,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_male_75over =</span> estimate.male_75over_disability<span class="sc">/</span>estimate.male_75over,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_female_under5 =</span> estimate.female_under5_disability<span class="sc">/</span>estimate.female_under5,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_female_1517 =</span> estimate.female_1517_disability<span class="sc">/</span>estimate.female_1517,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_female_1834 =</span> estimate.female_1834_disability<span class="sc">/</span>estimate.female_1834,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_female_3564 =</span> estimate.female_3564_disability<span class="sc">/</span>estimate.female_3564,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_female_6574 =</span> estimate.female_6574_disability<span class="sc">/</span>estimate.female_6574,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_female_75over =</span> estimate.female_75over_disability<span class="sc">/</span>estimate.female_75over</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent.male =</span> estimate.total_male<span class="sc">/</span>estimate.total,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent.female =</span> estimate.total_female<span class="sc">/</span>estimate.total</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>data_full <span class="ot">=</span> data</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data[,<span class="dv">57</span><span class="sc">:</span><span class="dv">70</span>]</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co">#initial visualization</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$percent_male_under5
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+0.00000 0.00000 0.00000 0.00703 0.00000 0.60000      74 
+
+$percent_male_1517
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+0.00000 0.02287 0.06591 0.08948 0.12722 1.00000      48 
+
+$percent_male_1834
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+0.00000 0.02814 0.06250 0.07785 0.10797 0.67442      29 
+
+$percent_male_3564
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+0.00000 0.08271 0.13115 0.14725 0.18861 1.00000      28 
+
+$percent_male_6574
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  0.1562  0.2488  0.2679  0.3556  1.0000      41 
+
+$percent_male_75over
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  0.3266  0.4576  0.4595  0.5829  1.0000      59 
+
+$percent_female_under5
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  0.0000  0.0000  0.0069  0.0000  0.7241      78 
+
+$percent_female_1517
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+0.00000 0.00000 0.03234 0.05327 0.07634 1.00000      43 
+
+$percent_female_1834
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+0.00000 0.02196 0.05468 0.06851 0.09837 0.65546      30 
+
+$percent_female_3564
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+0.00000 0.08263 0.13181 0.15003 0.19516 1.00000      30 
+
+$percent_female_6574
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  0.1343  0.2126  0.2397  0.3158  1.0000      41 
+
+$percent_female_75over
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  0.3817  0.4811  0.4893  0.5935  1.0000      49 
+
+$percent.male
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  0.4678  0.4883  0.4862  0.5062  1.0000      20 
+
+$percent.female
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  0.4938  0.5117  0.5138  0.5322  1.0000      20 </code></pre>
+</div>
+</div>
 <p>https://walker-data.com/census-r/an-introduction-to-tidycensus.html might be helpful</p>
 <ol start="4" type="1">
-<li><p>Visualize the data. Create data visualizations of your choice. However, your analysis should include at least three plots with you using at least two different <code>geom_*()</code> functions from <code>ggplot2</code> (or another package with <code>geom_*()</code> functions).</p></li>
-<li><p>Report your findings. Provide a paragraph summarizing your methods and key findings. Include any limitations or potential biases in pulling data from the API or the analysis. Be sure to comment and organize your code so is easy to understand what you are doing.</p></li>
+<li>Visualize the data. Create data visualizations of your choice. However, your analysis should include at least three plots with you using at least two different <code>geom_*()</code> functions from <code>ggplot2</code> (or another package with <code>geom_*()</code> functions).</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|warning: false</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_female_under5))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"purple"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Females Under 5 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 78 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_male_under5))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"green"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Males Under 5 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 74 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_female_1517))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"purple"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Females 5-17 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 43 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_male_1517))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"green"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Males 5-17 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 48 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_female_1834))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"purple"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Females 18-34 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 30 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_male_1834))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"green"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Males 18-34 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 29 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_female_3564))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"purple"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Females 35-64 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 30 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_male_3564))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"green"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Males 35-64 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 28 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-8.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_female_6574))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"purple"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Females 65-74 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 41 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-9.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_male_6574))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"green"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Males 65-74 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 41 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-10.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_female_75over))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"purple"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Females Over 75 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 49 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-11.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(percent_male_75over))<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"green"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Percent Males Over 75 with Disability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 59 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-12.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|warning: false</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_point</span>(data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> percent_male_under5, <span class="at">y=</span>percent_female_under5), <span class="at">color =</span> <span class="st">"red"</span>)<span class="sc">+</span><span class="fu">geom_point</span>(data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> percent_male_1517, <span class="at">y=</span>percent_female_1517), <span class="at">color =</span> <span class="st">"orange"</span>)<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"Percent Males with Disability"</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">"Percent Females with Disability"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Males vs. Females Affected by Disability Under 5 and 5-17"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 103 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 57 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_point</span>(data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> percent_male_1834, <span class="at">y=</span>percent_female_1834), <span class="at">color =</span> <span class="st">"green"</span>)<span class="sc">+</span><span class="fu">geom_point</span>(data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> percent_male_3564, <span class="at">y=</span>percent_female_3564), <span class="at">color =</span> <span class="st">"blue"</span>)<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"Percent Males with Disability"</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">"Percent Females with Disability"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Males vs. Females Affected by Disability 18-34 and 35-64"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 31 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 33 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_point</span>(data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> percent_male_6574, <span class="at">y=</span>percent_female_6574), <span class="at">color =</span> <span class="st">"purple"</span>)<span class="sc">+</span><span class="fu">geom_point</span>(data, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> percent_male_75over, <span class="at">y=</span>percent_female_75over), <span class="at">color =</span> <span class="st">"gray"</span>)<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"Percent Males with Disability"</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">"Percent Females with Disability"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Males vs. Females Affected by Disability 65-74 and 75+"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 45 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 69 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="5" type="1">
+<li>Report your findings. Provide a paragraph summarizing your methods and key findings. Include any limitations or potential biases in pulling data from the API or the analysis. Be sure to comment and organize your code so is easy to understand what you are doing.</li>
 </ol>
 </section>
 <section id="part-2" class="level1">
@@ -220,178 +652,178 @@ Tip
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the URLs and their corresponding genres</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>urls <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=sci-fi"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=adventure"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=mystery"</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>genres <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Sci-Fi"</span>, <span class="st">"Adventure"</span>, <span class="st">"Mystery"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty data frame to store results</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>imdb_data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Title =</span> <span class="fu">character</span>(),</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Duration =</span> <span class="fu">character</span>(),</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Rating =</span> <span class="fu">character</span>(),</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Reviews =</span> <span class="fu">character</span>(),</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">character</span>(),</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Genre =</span> <span class="fu">character</span>(),</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each URL and genre</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(urls)) {</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Scrape the webpage</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  url <span class="ot">=</span> urls[i]</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  genre <span class="ot">=</span> genres[i]</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  webpage <span class="ot">=</span> <span class="fu">read_html</span>(url)</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie titles</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".with-margin .ipc-title__text"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie durations</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".cli-title-metadata-item:nth-child(2)"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie ratings</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--rating"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract number of reviews</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  reviews <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--voteCount"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract year</span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".cli-title-metadata-item:nth-child(1)"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure all vectors have the same length by padding with NA</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  max_length <span class="ot">=</span> <span class="fu">max</span>(<span class="fu">length</span>(titles), <span class="fu">length</span>(durations), <span class="fu">length</span>(ratings), <span class="fu">length</span>(reviews), <span class="fu">length</span>(years))</span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">=</span> <span class="fu">c</span>(titles, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(titles)))</span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">=</span> <span class="fu">c</span>(durations, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(durations)))</span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">=</span> <span class="fu">c</span>(ratings, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(ratings)))</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  reviews <span class="ot">=</span> <span class="fu">c</span>(reviews, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(reviews)))</span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">=</span> <span class="fu">c</span>(years, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(years)))</span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine the data into a temporary data frame with Genre</span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>  temp_data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">Title =</span> titles,</span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">Duration =</span> durations,</span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">Rating =</span> ratings,</span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">Reviews =</span> reviews,</span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> years,</span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">Genre =</span> <span class="fu">rep</span>(genre, max_length), <span class="co"># Add genre label here</span></span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Append the temporary data frame to the main data frame</span></span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>  imdb_data <span class="ot">=</span> <span class="fu">bind_rows</span>(imdb_data, temp_data)</span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the combined data with genre labels</span></span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(imdb_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the URLs and their corresponding genres</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>urls <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=sci-fi"</span>,</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=adventure"</span>,</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm&amp;sort=rank%2Casc&amp;genres=mystery"</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>genres <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Sci-Fi"</span>, <span class="st">"Adventure"</span>, <span class="st">"Mystery"</span>)</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty data frame to store results</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>imdb_data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Title =</span> <span class="fu">character</span>(),</span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Duration =</span> <span class="fu">character</span>(),</span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Rating =</span> <span class="fu">character</span>(),</span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Reviews =</span> <span class="fu">character</span>(),</span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">character</span>(),</span>
+<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Genre =</span> <span class="fu">character</span>(),</span>
+<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each URL and genre</span></span>
+<span id="cb64-21"><a href="#cb64-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(urls)) {</span>
+<span id="cb64-22"><a href="#cb64-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Scrape the webpage</span></span>
+<span id="cb64-23"><a href="#cb64-23" aria-hidden="true" tabindex="-1"></a>  url <span class="ot">=</span> urls[i]</span>
+<span id="cb64-24"><a href="#cb64-24" aria-hidden="true" tabindex="-1"></a>  genre <span class="ot">=</span> genres[i]</span>
+<span id="cb64-25"><a href="#cb64-25" aria-hidden="true" tabindex="-1"></a>  webpage <span class="ot">=</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb64-26"><a href="#cb64-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-27"><a href="#cb64-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie titles</span></span>
+<span id="cb64-28"><a href="#cb64-28" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb64-29"><a href="#cb64-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".with-margin .ipc-title__text"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb64-30"><a href="#cb64-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb64-31"><a href="#cb64-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-32"><a href="#cb64-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie durations</span></span>
+<span id="cb64-33"><a href="#cb64-33" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb64-34"><a href="#cb64-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".cli-title-metadata-item:nth-child(2)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb64-35"><a href="#cb64-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb64-36"><a href="#cb64-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-37"><a href="#cb64-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract movie ratings</span></span>
+<span id="cb64-38"><a href="#cb64-38" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb64-39"><a href="#cb64-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--rating"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb64-40"><a href="#cb64-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb64-41"><a href="#cb64-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-42"><a href="#cb64-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract number of reviews</span></span>
+<span id="cb64-43"><a href="#cb64-43" aria-hidden="true" tabindex="-1"></a>  reviews <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb64-44"><a href="#cb64-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--voteCount"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb64-45"><a href="#cb64-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb64-46"><a href="#cb64-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-47"><a href="#cb64-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract year</span></span>
+<span id="cb64-48"><a href="#cb64-48" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">=</span> webpage <span class="sc">%&gt;%</span></span>
+<span id="cb64-49"><a href="#cb64-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">".cli-title-metadata-item:nth-child(1)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb64-50"><a href="#cb64-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb64-51"><a href="#cb64-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-52"><a href="#cb64-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure all vectors have the same length by padding with NA</span></span>
+<span id="cb64-53"><a href="#cb64-53" aria-hidden="true" tabindex="-1"></a>  max_length <span class="ot">=</span> <span class="fu">max</span>(<span class="fu">length</span>(titles), <span class="fu">length</span>(durations), <span class="fu">length</span>(ratings), <span class="fu">length</span>(reviews), <span class="fu">length</span>(years))</span>
+<span id="cb64-54"><a href="#cb64-54" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">=</span> <span class="fu">c</span>(titles, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(titles)))</span>
+<span id="cb64-55"><a href="#cb64-55" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">=</span> <span class="fu">c</span>(durations, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(durations)))</span>
+<span id="cb64-56"><a href="#cb64-56" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">=</span> <span class="fu">c</span>(ratings, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(ratings)))</span>
+<span id="cb64-57"><a href="#cb64-57" aria-hidden="true" tabindex="-1"></a>  reviews <span class="ot">=</span> <span class="fu">c</span>(reviews, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(reviews)))</span>
+<span id="cb64-58"><a href="#cb64-58" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">=</span> <span class="fu">c</span>(years, <span class="fu">rep</span>(<span class="cn">NA</span>, max_length <span class="sc">-</span> <span class="fu">length</span>(years)))</span>
+<span id="cb64-59"><a href="#cb64-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-60"><a href="#cb64-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine the data into a temporary data frame with Genre</span></span>
+<span id="cb64-61"><a href="#cb64-61" aria-hidden="true" tabindex="-1"></a>  temp_data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb64-62"><a href="#cb64-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">Title =</span> titles,</span>
+<span id="cb64-63"><a href="#cb64-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">Duration =</span> durations,</span>
+<span id="cb64-64"><a href="#cb64-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">Rating =</span> ratings,</span>
+<span id="cb64-65"><a href="#cb64-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">Reviews =</span> reviews,</span>
+<span id="cb64-66"><a href="#cb64-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> years,</span>
+<span id="cb64-67"><a href="#cb64-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">Genre =</span> <span class="fu">rep</span>(genre, max_length), <span class="co"># Add genre label here</span></span>
+<span id="cb64-68"><a href="#cb64-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb64-69"><a href="#cb64-69" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb64-70"><a href="#cb64-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-71"><a href="#cb64-71" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Append the temporary data frame to the main data frame</span></span>
+<span id="cb64-72"><a href="#cb64-72" aria-hidden="true" tabindex="-1"></a>  imdb_data <span class="ot">=</span> <span class="fu">bind_rows</span>(imdb_data, temp_data)</span>
+<span id="cb64-73"><a href="#cb64-73" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb64-74"><a href="#cb64-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-75"><a href="#cb64-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the combined data with genre labels</span></span>
+<span id="cb64-76"><a href="#cb64-76" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(imdb_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                   Title Duration Rating Reviews Year  Genre
 1                  Venom: The Last Dance   1h 50m    6.2   (39K) 2024 Sci-Fi
 2                               Time Cut   1h 30m    5.0   (12K) 2024 Sci-Fi
-3 Apocalypse Z: The Beginning of the End   1h 52m    6.1  (9.7K) 2024 Sci-Fi
-4                         The Wild Robot   1h 42m    8.3   (75K) 2024 Sci-Fi
-5                   Deadpool &amp; Wolverine    2h 8m    7.7  (372K) 2024 Sci-Fi
-6                         Alien: Romulus   1h 59m    7.2  (160K) 2024 Sci-Fi</code></pre>
+3 Apocalypse Z: The Beginning of the End   1h 52m    6.1  (9.9K) 2024 Sci-Fi
+4                         The Wild Robot   1h 42m    8.3   (76K) 2024 Sci-Fi
+5                   Deadpool &amp; Wolverine    2h 8m    7.7  (373K) 2024 Sci-Fi
+6                         Alien: Romulus   1h 59m    7.2  (161K) 2024 Sci-Fi</code></pre>
 </div>
 </div>
 <p>Following the data collection phase, we proceed with cleaning and transforming the data using <code>dplyr</code> and <code>tidyr</code> functions. We convert review counts from shorthand notations (e.g., “39K”) to full numerical values (e.g., “39000”) by removing any parentheses and expanding “K” or “M” suffixes to represent thousands or millions, respectively. Additionally, we transform the Duration field from an “hours and minutes” format into total minutes. This is achieved by splitting the duration string into separate hours and minutes components using the separate() function, converting these components to numeric values, and then calculating the total duration in minutes by combining them. We also needed to manually shift observations based on missingness for Reviews and Ratings for two films.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert Duration and Reviews</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> imdb_data <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">gsub</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">(|</span><span class="sc">\\</span><span class="st">)$"</span>, <span class="st">""</span>, Reviews)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+K$"</span>, Reviews),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>, <span class="fu">sub</span>(<span class="st">"K$"</span>, <span class="st">""</span>, Reviews)), <span class="st">"00"</span>),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"K$"</span>, Reviews),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">sub</span>(<span class="st">"K$"</span>, <span class="st">""</span>, Reviews), <span class="st">"000"</span>),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+M$"</span>, Reviews),</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>, <span class="fu">sub</span>(<span class="st">"M$"</span>, <span class="st">""</span>, Reviews)), <span class="st">"00000"</span>),</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Duration, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Hours"</span>, <span class="st">"Minutes"</span>), <span class="at">sep =</span> <span class="st">"h "</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Hours =</span> <span class="fu">as.numeric</span>(Hours),</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes =</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"m"</span>, <span class="st">""</span>, Minutes))) <span class="sc">%&gt;%</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Duration, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Hours"</span>, <span class="st">"Minutes"</span>), <span class="at">sep =</span> <span class="st">"h "</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Hours =</span> <span class="fu">as.numeric</span>(Hours),</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes =</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"m"</span>, <span class="st">""</span>, Minutes)),</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes2 =</span> Hours <span class="sc">*</span> <span class="dv">60</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">Duration =</span> Minutes <span class="sc">+</span> Minutes2) <span class="sc">%&gt;%</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Hours, <span class="sc">-</span>Minutes, <span class="sc">-</span>Minutes2) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">as.numeric</span>(Reviews)) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rating =</span> <span class="fu">as.numeric</span>(Rating)) </span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Rating[<span class="dv">51</span><span class="sc">:</span><span class="dv">61</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Rating[<span class="dv">51</span><span class="sc">:</span><span class="dv">60</span>])</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Rating[<span class="dv">38</span><span class="sc">:</span><span class="dv">43</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Rating[<span class="dv">38</span><span class="sc">:</span><span class="dv">42</span>])</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Reviews[<span class="dv">51</span><span class="sc">:</span><span class="dv">61</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Reviews[<span class="dv">51</span><span class="sc">:</span><span class="dv">60</span>])</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Reviews[<span class="dv">38</span><span class="sc">:</span><span class="dv">43</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Reviews[<span class="dv">38</span><span class="sc">:</span><span class="dv">42</span>])</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert Duration and Reviews</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> imdb_data <span class="sc">%&gt;%</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">gsub</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">(|</span><span class="sc">\\</span><span class="st">)$"</span>, <span class="st">""</span>, Reviews)) <span class="sc">%&gt;%</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+K$"</span>, Reviews),</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>, <span class="fu">sub</span>(<span class="st">"K$"</span>, <span class="st">""</span>, Reviews)), <span class="st">"00"</span>),</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"K$"</span>, Reviews),</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">sub</span>(<span class="st">"K$"</span>, <span class="st">""</span>, Reviews), <span class="st">"000"</span>),</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+M$"</span>, Reviews),</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>, <span class="fu">sub</span>(<span class="st">"M$"</span>, <span class="st">""</span>, Reviews)), <span class="st">"00000"</span>),</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>                          Reviews)) <span class="sc">%&gt;%</span></span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Duration, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Hours"</span>, <span class="st">"Minutes"</span>), <span class="at">sep =</span> <span class="st">"h "</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Hours =</span> <span class="fu">as.numeric</span>(Hours),</span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes =</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"m"</span>, <span class="st">""</span>, Minutes))) <span class="sc">%&gt;%</span></span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Duration, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Hours"</span>, <span class="st">"Minutes"</span>), <span class="at">sep =</span> <span class="st">"h "</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Hours =</span> <span class="fu">as.numeric</span>(Hours),</span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes =</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"m"</span>, <span class="st">""</span>, Minutes)),</span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">Minutes2 =</span> Hours <span class="sc">*</span> <span class="dv">60</span>,</span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">Duration =</span> Minutes <span class="sc">+</span> Minutes2) <span class="sc">%&gt;%</span></span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Hours, <span class="sc">-</span>Minutes, <span class="sc">-</span>Minutes2) <span class="sc">%&gt;%</span> </span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Reviews =</span> <span class="fu">as.numeric</span>(Reviews)) <span class="sc">%&gt;%</span> </span>
+<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rating =</span> <span class="fu">as.numeric</span>(Rating)) </span>
+<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-25"><a href="#cb66-25" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Rating[<span class="dv">51</span><span class="sc">:</span><span class="dv">61</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Rating[<span class="dv">51</span><span class="sc">:</span><span class="dv">60</span>])</span>
+<span id="cb66-26"><a href="#cb66-26" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Rating[<span class="dv">38</span><span class="sc">:</span><span class="dv">43</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Rating[<span class="dv">38</span><span class="sc">:</span><span class="dv">42</span>])</span>
+<span id="cb66-27"><a href="#cb66-27" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Reviews[<span class="dv">51</span><span class="sc">:</span><span class="dv">61</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Reviews[<span class="dv">51</span><span class="sc">:</span><span class="dv">60</span>])</span>
+<span id="cb66-28"><a href="#cb66-28" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Reviews[<span class="dv">38</span><span class="sc">:</span><span class="dv">43</span>] <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, df<span class="sc">$</span>Reviews[<span class="dv">38</span><span class="sc">:</span><span class="dv">42</span>])</span>
+<span id="cb66-29"><a href="#cb66-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-30"><a href="#cb66-30" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                   Title Duration Rating Reviews Year  Genre
 1                  Venom: The Last Dance      110    6.2   39000 2024 Sci-Fi
 2                               Time Cut       90    5.0   12000 2024 Sci-Fi
-3 Apocalypse Z: The Beginning of the End      112    6.1    9700 2024 Sci-Fi
-4                         The Wild Robot      102    8.3   75000 2024 Sci-Fi
-5                   Deadpool &amp; Wolverine      128    7.7  372000 2024 Sci-Fi
-6                         Alien: Romulus      119    7.2  160000 2024 Sci-Fi</code></pre>
+3 Apocalypse Z: The Beginning of the End      112    6.1    9900 2024 Sci-Fi
+4                         The Wild Robot      102    8.3   76000 2024 Sci-Fi
+5                   Deadpool &amp; Wolverine      128    7.7  373000 2024 Sci-Fi
+6                         Alien: Romulus      119    7.2  161000 2024 Sci-Fi</code></pre>
 </div>
 </div>
 <p>We produce a violin plot showing the differences in rating distributions for each genre. Adventure and Sci-Fi movies generally have higher ratings clustered between 6 and 8, with Sci-Fi showing the widest and most even spread across this range. However, Mystery movies display a much denser concentration around the 6–8 range with fewer high ratings. This suggests that this genre might have more consistency but slightly lower average IMDb ratings compared to the other two. To complement the graph, it is also interesting to compare the means across the genres in which the Adventure genre has the highest mean rating of 7.26, while Mystery and Sci-Fi are around 6.7-6.8.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a violin plot of movie rating by genre</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> Genre, <span class="at">y =</span> Rating)) <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of IMDb Ratings Across Genres"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparing Adventure, Mystery, and Sci-Fi movie ratings on IMDb"</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Movie Genre"</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"IMDb Rating"</span>,</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Data Source: IMDb"</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a violin plot of movie rating by genre</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> Genre, <span class="at">y =</span> Rating)) <span class="sc">+</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>) <span class="sc">+</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of IMDb Ratings Across Genres"</span>,</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparing Adventure, Mystery, and Sci-Fi movie ratings on IMDb"</span>,</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Movie Genre"</span>,</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"IMDb Rating"</span>,</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Data Source: IMDb"</span></span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(Rating <span class="sc">~</span> Genre, <span class="at">data =</span> df, <span class="at">FUN =</span> mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(Rating <span class="sc">~</span> Genre, <span class="at">data =</span> df, <span class="at">FUN =</span> mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>      Genre   Rating
-1 Adventure 7.266667
-2   Mystery 6.629412
+1 Adventure 7.261905
+2   Mystery 6.617647
 3    Sci-Fi 6.800000</code></pre>
 </div>
 </div>
